@@ -1,0 +1,18 @@
+{
+    "name": "marwan/lab2",
+    "description": "composer for lab2",
+    "type": "project",
+    "autoload": {
+        "files": [
+            "config.php",
+            "function.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Marwan Mohamed",
+            "email": "marawanmohamed9876@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,0 +1,17 @@
+{
+    "name": "marwan/lab3",
+    "autoload": {
+            "files": ["config.php"],
+            "psr-4": {
+                "App\\": "src/"
+            }
+    
+    },
+    "authors": [
+        {
+            "name": "Marwan Mohamed",
+            "email": "marawanmohamed9876@gmail.com"
+        }
+    ],
+    "require": {}
+}
