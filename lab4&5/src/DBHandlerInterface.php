@@ -1,4 +1,6 @@
 <?php
+
+namespace App;  
 interface DBHandlerInterface
 {
   public function connect();

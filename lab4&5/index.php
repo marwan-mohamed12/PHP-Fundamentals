@@ -2,10 +2,36 @@
 
 require_once "vendor/autoload.php";
 
-use App\Items;
+use App\DBhandler;
 
-$itemsData = Items::skip(0)->take(5)->get();
-// print_r($itemsData);
+$dbConnect = new DBhandler();
+$dbConnect->connect();
+
+$page = isset($_GET["page"]) ? $_GET["page"] : 0;      
+if (($_SERVER["REQUEST_METHOD"] == "GET") && isset($_GET["click"])) {
+    if ($_GET["click"] == "prev") {
+        if ($page > 0) {
+            $page -= 5;
+            if ($page < 0) $page = 0;
+        }
+    } else if ($_GET["click"] == "next") {
+        $page += 5;
+    }
+} 
+
+$itemsData = $dbConnect->get_data($page, ["id", "PRODUCT_code", "product_name"]);
+
+var_dump($_POST);
+
+try {
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"]) && isset($_POST["colName"]) && isset($_POST["value"])) {
+        $itemsData = $dbConnect->search_by_column($_POST["colName"], $_POST["value"]);
+        echo $itemsData;
+    }
+} catch (\Exception $e) {
+    echo " <div class='mess'>".$e->getMessage()."</div>";
+}
+
 
 ?>
 
@@ -23,7 +49,12 @@ $itemsData = Items::skip(0)->take(5)->get();
 
 <body>
     <div class="container pt-4">
-
+        <form class="d-flex" role="search" method="POST">
+            <input class="form-control me-2" name="colName" type="text" placeholder="Column Name" aria-label="Search">
+            <input class="form-control me-2" name="value" type="text" placeholder="Value" aria-label="Search">
+            <button class="btn btn-outline-success" name="submit" type="submit">Search</button>
+        </form>
+        <br>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php
 
@@ -44,6 +75,26 @@ $itemsData = Items::skip(0)->take(5)->get();
 
             ?>
         </div>
+        <br>
+        <nav aria-label="..." class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item ">
+                    <?php
+                        echo <<<"navigateLink"
+                            <a href="?click=prev&page=$page" class="page-link">Previous</a>
+                        navigateLink;
+                    ?>
+                </li>
+                <li class="page-item">
+                    <?php
+                        echo <<<"navigateLink"
+                            <a href="?click=next&page=$page" class="page-link">Next</a>
+                        navigateLink;
+                    ?>
+                    
+                </li>
+            </ul>
+        </nav>
 
     </div>
 
@@ -51,4 +102,3 @@ $itemsData = Items::skip(0)->take(5)->get();
 </body>
 
 </html>
-

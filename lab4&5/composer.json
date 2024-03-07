@@ -2,7 +2,7 @@
     "name": "marwan/glasses",
     "description": "Glasses shop",
     "autoload": {
-        "files": ["config.php", "DB/DBhandler.php"],
+        "files": ["config.php"],
         "psr-4": {
             "App\\": "src/"
         }
